@@ -5,7 +5,7 @@ Wants=network-online.target
 RequiresMountsFor=/media/adam/DRPHOTOUSB/Gallery
 
 [Service]
-Type=oneshot
+Type=simple
 User=adam
 WorkingDirectory=/home/adam/samsung-tv-ws-api/example
 ExecStart=/home/adam/samsung-tv-ws-api/samsungvenv/bin/python async_art_update_from_directory.py 192.168.5.81 -D -f /media/adam/DRPHOTOUSB/Gallery -u 10 -m flexible_black -c 3600
