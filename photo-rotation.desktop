@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Photo Rotation Scheduler
+Comment=Auto-start Photo Rotation GUI
+Exec=/home/adam/samsung-tv-ws-api/samsungvenv/bin/python3 /home/adam/samsung-tv-ws-api/example/photo_rotation_scheduler.py
+Path=/home/adam/samsung-tv-ws-api/example
+Terminal=false
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+StartupNotify=false
