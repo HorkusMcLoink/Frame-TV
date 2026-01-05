@@ -1,0 +1,20 @@
+# Custom scripts and data files
+example/photo_rotation_scheduler.py
+example/photo_scheduler_config.ini
+example/error_log.txt
+example/log.txt
+example/photo_dates.json
+example/token_file.txt
+example/tv-deleter.py
+example/uploaded_files.json
+example/viewed_photos.json
+example/viewed_photos_log.json
+line_boss.json
+photocopier.py
+viewed_photos.json
+
+# Python environment and build artifacts
+samsungvenv/
+samsungtvws.egg-info/
+build/
+FrameTVSlideshow/
