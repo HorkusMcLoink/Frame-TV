@@ -126,7 +126,7 @@ class PhotoScheduler:
         self.photo_count = tk.StringVar(value="50")
         self.switches_per_day = tk.StringVar(value="1")
         self.main_time = tk.StringVar(value="21:15")
-        self.selection_mode = tk.StringVar(value="Newest")
+        self.selection_mode = tk.StringVar(value="Random")
         self.status = tk.StringVar(value="Ready")
         self.next_switch = tk.StringVar(value="Calculating...")
         
