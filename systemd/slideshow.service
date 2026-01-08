@@ -8,7 +8,7 @@ RequiresMountsFor=/media/adam/DRPHOTOUSB/Gallery
 Type=simple
 User=adam
 WorkingDirectory=/home/adam/samsung-tv-ws-api/example
-ExecStart=/home/adam/samsung-tv-ws-api/samsungvenv/bin/python3 /home/adam/samsung-tv-ws-api/example/async_art_update_from_directory.py 192.168.5.81 -D -f /media/adam/DRPHOTOUSB/Gallery -u 10 -m flexible_black -c 3600
+ExecStart=/home/adam/samsung-tv-ws-api/samsungvenv/bin/python3 /home/adam/samsung-tv-ws-api/example/async_art_update_from_directory.py 192.168.5.81 -D -f /media/adam/DRPHOTOUSB/Gallery -u 10 -m flexible_black -c 60
 Environment="PYTHONUNBUFFERED=1"
 Restart=on-failure
 RestartSec=5
