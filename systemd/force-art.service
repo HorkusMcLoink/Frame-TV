@@ -10,6 +10,7 @@ WorkingDirectory=/home/adam/samsung-tv-ws-api/example
 ExecStart=/home/adam/samsung-tv-ws-api/samsungvenv/bin/python async_art_ensure_art_mode.py 192.168.5.81 -p 5 -D
 Restart=always
 RestartSec=10
+RuntimeMaxSec=300
 Environment="PYTHONUNBUFFERED=1"
 
 [Install]
