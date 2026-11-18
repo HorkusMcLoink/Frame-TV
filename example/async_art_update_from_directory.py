@@ -66,8 +66,8 @@ try:
 except ImportError:
     pass
 
-from samsungtvws.async_art import SamsungTVAsyncArt
-from samsungtvws import __version__
+from samsungframetv.async_art import SamsungTVAsyncArt
+from samsungframetv import __version__
 
 logging.basicConfig(level=logging.INFO)
 
@@ -302,8 +302,8 @@ class monitor_and_display:
                 else:
                     self.log.info('Valid mattes types: {} and colors: {}'.format(matte_types, matte_colors))
                 self.log.warning('Invalid matte selected: {}. A valid matte would be shadowbox_polar for eample, using none'.format(self.matte))
-            except AssertionError:
-                self.log.warning('Error getting mattes list, setting to none'.format(e))
+            except AssertionError as e:
+                self.log.warning('Error getting mattes list, setting to none: {}'.format(e))
             self.matte = 'none'
             
     async def initialize(self):
