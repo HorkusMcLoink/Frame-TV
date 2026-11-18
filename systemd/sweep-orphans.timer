@@ -1,0 +1,9 @@
+[Unit]
+Description=Hourly sweep of untracked Frame TV photos
+
+[Timer]
+OnCalendar=hourly
+Persistent=true
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,11 @@
+[Unit]
+Description=Samsung Frame TV - Sweep untracked photos
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=adam
+WorkingDirectory=/home/adam/samsung-tv-ws-api/example
+ExecStart=/home/adam/samsungvenv-test/bin/python3 /home/adam/samsung-tv-ws-api/example/async_art_sweep_orphans.py 192.168.5.81 --delete --retries 3 --retry-wait 300
+Environment="PYTHONUNBUFFERED=1"
