@@ -33,6 +33,7 @@ MIN_PHOTO_COUNT = 1
 MAX_SWITCHES_PER_DAY = 100
 CACHE_SAVE_INTERVAL = 5000  # Save cache every N photos scanned
 THREAD_JOIN_TIMEOUT = 2.0
+EXTRA_CANDIDATES = 10  # extra photos picked so damaged ones can be replaced
 
 
 class TextHandler(logging.Handler):
@@ -702,7 +703,7 @@ class PhotoScheduler:
             mode = self.selection_mode.get()
             orientation = self.orientation_filter.get()
             self.logger.info("Selecting new photos...")
-            selected = self.select_photos(library_path, count, mode, orientation)
+            selected, damaged = self._select_intact_photos(library_path, count, mode, orientation)
             selected_names = {photo.name for photo in selected}
             
             if self.operation_cancelled.is_set():
@@ -734,6 +735,9 @@ class PhotoScheduler:
             self.save_viewed_photos()
             self.logger.info(f"Switch complete: {len(selected_names)} photos now in gallery")
             result_message = f"Switched to {len(selected_names)} photos"
+            if damaged:
+                self.logger.warning("Damaged photos skipped on this run: " + ", ".join(damaged) + ". Please replace them.")
+                result_message += f" ({len(damaged)} damaged skipped)"
             
         except FileNotFoundError as e:
             self.logger.error(f"Path error: {e}")
@@ -745,6 +749,38 @@ class PhotoScheduler:
             self.root.after(0, lambda msg=result_message: self.end_operation(msg))
             self.operation_lock.release()
     
+    def _photo_damage(self, photo):
+        """Fully decode a photo. Returns an error message if damaged, otherwise None"""
+        if not PIL_AVAILABLE:
+            return None
+        try:
+            with Image.open(photo) as img:
+                img.load()
+            return None
+        except Exception as e:
+            return str(e)
+
+    def _select_intact_photos(self, library_path, count, mode, orientation):
+        """Select photos, then fully decode each one and skip any that are damaged.
+        Asks for a few extra candidates so damaged ones can be replaced."""
+        candidates = self.select_photos(library_path, count + EXTRA_CANDIDATES, mode, orientation)
+        if mode == "Random":
+            random.shuffle(candidates)
+        intact, damaged = [], []
+        for photo in candidates:
+            if self.operation_cancelled.is_set() or len(intact) >= count:
+                break
+            error = self._photo_damage(photo)
+            if error is None:
+                intact.append(photo)
+            else:
+                damaged.append(photo.name)
+                self.logger.warning(f"DAMAGED: {photo.name} was found to be damaged on the last run ({error}). "
+                                    f"It was not sent to the Gallery. Please replace this photo.")
+        if len(intact) < count and not self.operation_cancelled.is_set():
+            self.logger.warning(f"Only {len(intact)} of {count} photos were usable")
+        return intact, damaged
+
     def _move_photos_to_gallery(self, selected_photos, gallery_path):
         """Move selected photos to gallery, handling duplicates"""
         moved_count = 0
